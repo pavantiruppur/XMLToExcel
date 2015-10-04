@@ -1,62 +1,23 @@
 package com.bosch.xmltoexcel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ExcelBO {
 
-	private String className;
-	private String classType;
-	private String ownerFc;
-	private String ownerBc;
-	private Integer classVarible;
-	private Integer classParameter;
-	private Integer classService;
-	private Integer nestedClass;
+	private List<Sheet1BO> sheet1 = new ArrayList<Sheet1BO>();
+	private List<Sheet2BO> sheet2 = new ArrayList<Sheet2BO>();
 	
-	public String getClassName() {
-		return className;
+	public List<Sheet1BO> getSheet1() {
+		return sheet1;
 	}
-	public void setClassName(String className) {
-		this.className = className;
+	public void setSheet1(List<Sheet1BO> sheet1) {
+		this.sheet1 = sheet1;
 	}
-	public String getClassType() {
-		return classType;
+	public List<Sheet2BO> getSheet2() {
+		return sheet2;
 	}
-	public void setClassType(String classType) {
-		this.classType = classType;
-	}
-	public String getOwnerFc() {
-		return ownerFc;
-	}
-	public void setOwnerFc(String ownerFc) {
-		this.ownerFc = ownerFc;
-	}
-	public String getOwnerBc() {
-		return ownerBc;
-	}
-	public void setOwnerBc(String ownerBc) {
-		this.ownerBc = ownerBc;
-	}
-	public Integer getClassVarible() {
-		return classVarible;
-	}
-	public void setClassVarible(Integer classVarible) {
-		this.classVarible = classVarible;
-	}
-	public Integer getClassParameter() {
-		return classParameter;
-	}
-	public void setClassParameter(Integer classParameter) {
-		this.classParameter = classParameter;
-	}
-	public Integer getClassService() {
-		return classService;
-	}
-	public void setClassService(Integer classService) {
-		this.classService = classService;
-	}
-	public Integer getNestedClass() {
-		return nestedClass;
-	}
-	public void setNestedClass(Integer nestedClass) {
-		this.nestedClass = nestedClass;
+	public void setSheet2(List<Sheet2BO> sheet2) {
+		this.sheet2 = sheet2;
 	}
 }
