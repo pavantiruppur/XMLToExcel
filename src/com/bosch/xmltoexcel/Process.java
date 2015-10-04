@@ -94,6 +94,7 @@ public class Process {
 					NodeList tempNodeList = temp.getElementsByTagName("CATEGORY");
 					String shortName = tempNodeList.getLength() > 0 ? tempNodeList.item(0).getTextContent() : null;
 					if(shortName.equalsIgnoreCase("FCT")){
+						temp = (Element)temp.getElementsByTagName("SW-FEATURE-OWNED-ELEMENTS").item(0);
 						sheet2.setOwnedClasses(getListOfElementValue(temp, "SW-CLASS-REF"));
 					}
 				}
@@ -234,6 +235,9 @@ public class Process {
 	
 	public String getListOfElementValue(Element element, String tagName){
 		String elementValues = new String();
+		if(element == null){
+			return elementValues;
+		}
 		NodeList nodeList = element.getElementsByTagName(tagName);
 		for (int count = 0; count < nodeList.getLength(); count++) {
 			elementValues += nodeList.item(count).getTextContent().trim() +"\n";
