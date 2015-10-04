@@ -88,7 +88,7 @@ public class Process {
 					}
 				}
 				
-				NodeList feartureNodes = doc.getElementsByTagName("SW-FEATURE-INTERFACE");
+				NodeList feartureNodes = doc.getElementsByTagName("SW-FEATURE");
 				for(int i = 0; i < feartureNodes.getLength(); i++){
 					Element temp = (Element) feartureNodes.item(i);
 					NodeList tempNodeList = temp.getElementsByTagName("CATEGORY");
