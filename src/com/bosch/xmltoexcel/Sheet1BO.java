@@ -2,7 +2,7 @@ package com.bosch.xmltoexcel;
 
 public class Sheet1BO {
 
-	private String className;
+	private String className = "";
 	private String classType;
 	private String ownerFc;
 	private String ownerBc;
@@ -59,4 +59,18 @@ public class Sheet1BO {
 	public void setNestedClass(Integer nestedClass) {
 		this.nestedClass = nestedClass;
 	}
+	
+	/*@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Sheet1BO)){
+			return false;
+		}
+		Sheet1BO sheet = (Sheet1BO) obj;
+		return sheet.getClassName().equals(this.getClassName());
+	}
+	
+	@Override
+	public int hashCode() {
+		return 0;
+	}*/
 }

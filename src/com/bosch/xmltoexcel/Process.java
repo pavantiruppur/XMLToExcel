@@ -6,7 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -52,7 +54,7 @@ public class Process {
 			for (File childFiles : file.listFiles()) {
 				searchFileAndConvertToExcelList(childFiles, excelBO);
 			}
-		} else if(file.getName().contains("_pavast.xml")){
+		} else if(file.getName().contains("_pavast.xml") || file.getName().contains("_auto_pavast.xml")){
 			convertXmlToExcelList(file, excelBO);
 		}
 		return excelBO;
@@ -60,7 +62,7 @@ public class Process {
 
 	@SuppressWarnings("unchecked")
 	public ExcelBO convertXmlToExcelList(File file, ExcelBO excelBO) {
-		List<Sheet1BO> excelBoList = Collections.EMPTY_LIST;
+		Set<Sheet1BO> excelBoList = Collections.EMPTY_SET;
 		try {
 			DocumentBuilderFactory factory = DocumentBuilderFactory
 					.newInstance();
@@ -146,11 +148,12 @@ public class Process {
 		return excelBoList;
 	}
 
-	public List<Sheet1BO> createExcelList(NodeList nodeList, File file) {
-		List<Sheet1BO> excelBoList = new ArrayList<Sheet1BO>();
+	public Set<Sheet1BO> createExcelList(NodeList nodeList, File file) {
+		Set<Sheet1BO> excelBoList = new HashSet<Sheet1BO>();
 		for (int count = 0; count < nodeList.getLength(); count++) {
 			Node swClassNode = nodeList.item(count);
-			if (swClassNode.getNodeType() == Node.ELEMENT_NODE && swClassNode.getParentNode().getNodeName().equals("SW-COMPONENTS")) {
+			if (swClassNode.getNodeType() == Node.ELEMENT_NODE && (swClassNode.getParentNode().getNodeName().equals("SW-COMPONENTS")
+					|| swClassNode.getParentNode().getNodeName().equals("SW-CLASSES"))) {
 				Element swClass = (Element) swClassNode;
 				NodeList tempNodeList = swClass
 						.getElementsByTagName("SHORT-NAME");
@@ -168,13 +171,13 @@ public class Process {
 				NodeList innerSwClass = swClass
 						.getElementsByTagName("SW-CLASS");
 				Sheet1BO excelBo = new Sheet1BO();
-				excelBo.setClassName(shortName.getTextContent());
-				excelBo.setClassType(swImplPolicy.getTextContent());
-				excelBo.setClassVarible(variables.getLength());
-				excelBo.setClassParameter(prameters.getLength());
-				excelBo.setClassService(service.getLength());
-				excelBo.setNestedClass(innerSwClass.getLength());
-				excelBo.setOwnerFc(file.getName());
+				excelBo.setClassName(shortName == null ? null : shortName.getTextContent());
+				excelBo.setClassType(swImplPolicy == null ? null : swImplPolicy.getTextContent());
+				excelBo.setClassVarible(variables == null ? null : variables.getLength());
+				excelBo.setClassParameter(prameters == null ? null : prameters.getLength());
+				excelBo.setClassService(service == null ? null : service.getLength());
+				excelBo.setNestedClass(innerSwClass == null ? null : innerSwClass.getLength());
+				excelBo.setOwnerFc(file == null ? null : file.getName());
 				File parentFile = file.getParentFile().getParentFile();
 				excelBo.setOwnerBc(parentFile != null ? parentFile.getName() : null);
 				excelBoList.add(excelBo);
@@ -185,7 +188,7 @@ public class Process {
 
 	public void writeStudentsListToExcel(ExcelBO excelBO,
 			String outputLocation) {
-		List<Sheet1BO> excelBoList = excelBO.getSheet1();
+		Set<Sheet1BO> excelBoList = excelBO.getSheet1();
 		Workbook workbook = new XSSFWorkbook();
 		Sheet sheet1 = workbook.createSheet("Sheet1");
 		int rowIndex = 0;
