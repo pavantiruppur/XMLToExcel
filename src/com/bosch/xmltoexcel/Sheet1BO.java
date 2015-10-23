@@ -10,6 +10,7 @@ public class Sheet1BO {
 	private Integer classParameter;
 	private Integer classService;
 	private Integer nestedClass;
+	private String importedFc;
 	
 	public String getClassName() {
 		return className;
@@ -59,8 +60,14 @@ public class Sheet1BO {
 	public void setNestedClass(Integer nestedClass) {
 		this.nestedClass = nestedClass;
 	}
+	public String getImportedFc() {
+		return importedFc;
+	}
+	public void setImportedFc(String importedFc) {
+		this.importedFc = importedFc;
+	}
 	
-	/*@Override
+	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Sheet1BO)){
 			return false;
@@ -72,5 +79,5 @@ public class Sheet1BO {
 	@Override
 	public int hashCode() {
 		return 0;
-	}*/
+	}
 }

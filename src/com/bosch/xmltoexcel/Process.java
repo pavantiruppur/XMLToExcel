@@ -45,8 +45,27 @@ public class Process {
 		}
 		ExcelBO excelBO = new ExcelBO();
 		excelBO = process.searchFileAndConvertToExcelList(file, excelBO);
+		excelBO = process.findOwnedAndImport(excelBO);
 		process.writeStudentsListToExcel(excelBO, XL_OUTOUT_LOCATION);
 		JOptionPane.showMessageDialog(null, "Excel created successfully in "+ XL_OUTOUT_LOCATION);
+	}
+	
+	public ExcelBO findOwnedAndImport(ExcelBO excelBO){
+		for(Sheet1BO sheet1 : excelBO.getSheet1()){
+			String ownedFc = "";
+			String importedFc = "";
+			for(Sheet2BO sheet2 : excelBO.getSheet2()){
+				if(sheet2.getOwnedClasses() != null && sheet2.getOwnedClasses().contains(sheet1.getClassName())){
+					ownedFc += "\n"+ sheet2.getFcName();
+				}
+				if(sheet2.getImportClasses() != null && sheet2.getImportClasses().contains(sheet1.getClassName())){
+					importedFc += "\n"+ sheet2.getFcName();
+				}
+			}
+			sheet1.setOwnerFc(ownedFc);
+			sheet1.setImportedFc(importedFc);
+		}
+		return excelBO;
 	}
 
 	public ExcelBO searchFileAndConvertToExcelList(File file, ExcelBO excelBO) {
@@ -204,6 +223,7 @@ public class Process {
 					excelBo.getClassParameter());
 			row.createCell(cellIndex++).setCellValue(excelBo.getClassService());
 			row.createCell(cellIndex++).setCellValue(excelBo.getNestedClass());
+			row.createCell(cellIndex++).setCellValue(excelBo.getImportedFc());
 		}
 		
 		List<Sheet2BO> sheet2BOlist = excelBO.getSheet2();
