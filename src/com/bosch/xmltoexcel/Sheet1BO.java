@@ -5,12 +5,14 @@ public class Sheet1BO {
 	private String className = "";
 	private String classType;
 	private String ownerFc;
+	private Integer ownedFcCount;
 	private String ownerBc;
 	private Integer classVarible;
 	private Integer classParameter;
 	private Integer classService;
 	private Integer nestedClass;
 	private String importedFc;
+	private Integer importedFcCount;
 	
 	public String getClassName() {
 		return className;
@@ -65,6 +67,18 @@ public class Sheet1BO {
 	}
 	public void setImportedFc(String importedFc) {
 		this.importedFc = importedFc;
+	}
+	public Integer getOwnedFcCount() {
+		return ownedFcCount;
+	}
+	public void setOwnedFcCount(Integer ownedFcCount) {
+		this.ownedFcCount = ownedFcCount;
+	}
+	public Integer getImportedFcCount() {
+		return importedFcCount;
+	}
+	public void setImportedFcCount(Integer importedFcCount) {
+		this.importedFcCount = importedFcCount;
 	}
 	
 	@Override

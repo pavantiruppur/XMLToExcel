@@ -54,16 +54,22 @@ public class Process {
 		for(Sheet1BO sheet1 : excelBO.getSheet1()){
 			String ownedFc = "";
 			String importedFc = "";
+			int ownedFcCount = 0;
+			int importFcCount = 0;
 			for(Sheet2BO sheet2 : excelBO.getSheet2()){
 				if(sheet2.getOwnedClasses() != null && sheet2.getOwnedClasses().contains(sheet1.getClassName())){
 					ownedFc += "\n"+ sheet2.getFcName();
+					ownedFcCount++;
 				}
 				if(sheet2.getImportClasses() != null && sheet2.getImportClasses().contains(sheet1.getClassName())){
 					importedFc += "\n"+ sheet2.getFcName();
+					importFcCount++;
 				}
 			}
 			sheet1.setOwnerFc(ownedFc);
 			sheet1.setImportedFc(importedFc);
+			sheet1.setOwnedFcCount(ownedFcCount);
+			sheet1.setImportedFcCount(importFcCount);
 		}
 		return excelBO;
 	}
@@ -95,7 +101,8 @@ public class Process {
 				excelBO.getSheet1().addAll(excelBoList);
 				
 				Sheet2BO sheet2 = new Sheet2BO();
-				String fileName = file.getName().split("_pavast.xml")[0];
+				String parentFile = file.getParentFile().getParentFile() != null ? file.getParentFile().getParentFile().getName() : "";
+				String fileName = parentFile +"/" + file.getParentFile().getName() +"/"+ file.getName().split("_pavast.xml")[0];
 				sheet2.setFcName(fileName);
 				NodeList interfaceNodes = doc.getElementsByTagName("SW-FEATURE-INTERFACE");
 				for(int i = 0; i < interfaceNodes.getLength(); i++){
@@ -217,6 +224,7 @@ public class Process {
 			row.createCell(cellIndex++).setCellValue(excelBo.getClassName());
 			row.createCell(cellIndex++).setCellValue(excelBo.getClassType());
 			row.createCell(cellIndex++).setCellValue(excelBo.getOwnerFc());
+			row.createCell(cellIndex++).setCellValue(excelBo.getOwnedFcCount());
 			row.createCell(cellIndex++).setCellValue(excelBo.getOwnerBc());
 			row.createCell(cellIndex++).setCellValue(excelBo.getClassVarible());
 			row.createCell(cellIndex++).setCellValue(
@@ -224,6 +232,7 @@ public class Process {
 			row.createCell(cellIndex++).setCellValue(excelBo.getClassService());
 			row.createCell(cellIndex++).setCellValue(excelBo.getNestedClass());
 			row.createCell(cellIndex++).setCellValue(excelBo.getImportedFc());
+			row.createCell(cellIndex++).setCellValue(excelBo.getImportedFcCount());
 		}
 		
 		List<Sheet2BO> sheet2BOlist = excelBO.getSheet2();
