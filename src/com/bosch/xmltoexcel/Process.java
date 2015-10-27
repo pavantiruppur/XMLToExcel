@@ -101,9 +101,10 @@ public class Process {
 				excelBO.getSheet1().addAll(excelBoList);
 				
 				Sheet2BO sheet2 = new Sheet2BO();
+				String fileName = file.getName().split("_pavast.xml")[0];
 				String parentFile = file.getParentFile().getParentFile() != null ? file.getParentFile().getParentFile().getName() : "";
-				String fileName = parentFile +"/" + file.getParentFile().getName() +"/"+ file.getName().split("_pavast.xml")[0];
-				sheet2.setFcName(fileName);
+				String fullFileName = parentFile +"/" + file.getParentFile().getName() +"/"+ fileName;
+				sheet2.setFcName(fullFileName);
 				NodeList interfaceNodes = doc.getElementsByTagName("SW-FEATURE-INTERFACE");
 				for(int i = 0; i < interfaceNodes.getLength(); i++){
 					Element temp = (Element) interfaceNodes.item(i);
