@@ -66,7 +66,9 @@ public class Process {
 					importFcCount++;
 				}
 			}
-			sheet1.setOwnerFc(ownedFc);
+			if(ownedFcCount > 0){
+				sheet1.setOwnerFc(ownedFc);
+			}
 			sheet1.setImportedFc(importedFc);
 			sheet1.setOwnedFcCount(ownedFcCount);
 			sheet1.setImportedFcCount(importFcCount);
