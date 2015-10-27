@@ -57,11 +57,11 @@ public class Process {
 			int ownedFcCount = 0;
 			int importFcCount = 0;
 			for(Sheet2BO sheet2 : excelBO.getSheet2()){
-				if(sheet2.getOwnedClasses() != null && sheet2.getOwnedClasses().contains(sheet1.getClassName())){
+				if(sheet2.getOwnedClasses() != null && sheet2.getOwnedClasses().contains(sheet1.getClassName() + "\n")){
 					ownedFc += "\n"+ sheet2.getFcName();
 					ownedFcCount++;
 				}
-				if(sheet2.getImportClasses() != null && sheet2.getImportClasses().contains(sheet1.getClassName())){
+				if(sheet2.getImportClasses() != null && sheet2.getImportClasses().contains(sheet1.getClassName() + "\n")){
 					importedFc += "\n"+ sheet2.getFcName();
 					importFcCount++;
 				}
