@@ -6,8 +6,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.swing.JFileChooser;
@@ -51,6 +54,8 @@ public class Process {
 	}
 	
 	public ExcelBO findOwnedAndImport(ExcelBO excelBO){
+		Map<String, Map<String, Integer>> ownedModifierMap = new HashMap<String, Map<String,Integer>>();
+		Map<String, Map<String, Integer>> impModifierMap = new HashMap<String, Map<String,Integer>>();
 		for(Sheet1BO sheet1 : excelBO.getSheet1()){
 			String ownedFc = "";
 			String parentOwnedFc = "";
@@ -84,7 +89,40 @@ public class Process {
 			sheet1.setSuParentImportedFc(suParentImportedFc);
 			sheet1.setOwnedFcCount(ownedFcCount);
 			sheet1.setImportedFcCount(importFcCount);
+			
+			Map<String, Integer> ownedCountMap = ownedModifierMap.get(suParentOwnedFc);
+			if(ownedCountMap == null){
+				ownedCountMap = new HashMap<String, Integer>();
+				ownedModifierMap.put(suParentOwnedFc, ownedCountMap);
+			}
+			
+			Integer modifierCount = ownedCountMap.get(sheet1.getClassType());
+			if(modifierCount == null){
+				modifierCount = 0;
+			}
+			
+			modifierCount++;
+			ownedCountMap.put(sheet1.getClassType(), modifierCount);
+			
+			String[] impArr = suParentImportedFc.split("\n");
+			for(String imp : impArr){
+				Map<String, Integer> impCountMap = impModifierMap.get(imp);
+				if(impCountMap == null){
+					impCountMap = new HashMap<String, Integer>();
+					impModifierMap.put(imp, impCountMap);
+				}
+				
+				Integer impModifierCount = impCountMap.get(sheet1.getClassType());
+				if(impModifierCount == null){
+					impModifierCount = 0;
+				}
+				
+				impModifierCount++;
+				impCountMap.put(sheet1.getClassType(), impModifierCount);
+			}
 		}
+		excelBO.setOwnedModifierMap(ownedModifierMap);
+		excelBO.setImpModifierMap(impModifierMap);
 		return excelBO;
 	}
 
@@ -275,6 +313,34 @@ public class Process {
 			cell = row.createCell(cellIndex++);
 			cell.setCellStyle(cs);
 			cell.setCellValue(sheet2BO.getOwnedClasses());
+		}
+		
+		Sheet sheet3 = workbook.createSheet("Sheet3");
+		Map<String, Map<String, Integer>> ownedCountMap = excelBO.getOwnedModifierMap();
+		rowIndex = 0;
+		for (Entry<String, Map<String, Integer>> ownedMap : ownedCountMap.entrySet()) {
+			String value = "";
+			for(Entry<String, Integer> countMap : ownedMap.getValue().entrySet()){
+				value += countMap.getKey() + " - " + countMap.getValue() +"\n";
+			}
+			Row row = sheet3.createRow(rowIndex++);
+			int cellIndex = 0;
+			row.createCell(cellIndex++).setCellValue(ownedMap.getKey());
+			row.createCell(cellIndex++).setCellValue(value);
+		}
+		
+		Sheet sheet4 = workbook.createSheet("Sheet4");
+		Map<String, Map<String, Integer>> impCountMap = excelBO.getImpModifierMap();
+		rowIndex = 0;
+		for (Entry<String, Map<String, Integer>> ownedMap : impCountMap.entrySet()) {
+			String value = "";
+			for(Entry<String, Integer> countMap : ownedMap.getValue().entrySet()){
+				value += countMap.getKey() + " - " + countMap.getValue() +"\n";
+			}
+			Row row = sheet4.createRow(rowIndex++);
+			int cellIndex = 0;
+			row.createCell(cellIndex++).setCellValue(ownedMap.getKey());
+			row.createCell(cellIndex++).setCellValue(value);
 		}
 		try {
 			FileOutputStream fos = new FileOutputStream(outputLocation);
