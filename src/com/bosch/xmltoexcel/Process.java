@@ -53,23 +53,35 @@ public class Process {
 	public ExcelBO findOwnedAndImport(ExcelBO excelBO){
 		for(Sheet1BO sheet1 : excelBO.getSheet1()){
 			String ownedFc = "";
+			String parentOwnedFc = "";
+			String suParentOwnedFc = "";
 			String importedFc = "";
+			String parentImportedFc = "";
+			String suParentImportedFc = "";
 			int ownedFcCount = 0;
 			int importFcCount = 0;
 			for(Sheet2BO sheet2 : excelBO.getSheet2()){
 				if(sheet2.getOwnedClasses() != null && sheet2.getOwnedClasses().contains(sheet1.getClassName() + "\n")){
-					ownedFc += "\n"+ sheet2.getFcName();
+					ownedFc += sheet2.getFcName() + "\n";
+					parentOwnedFc += sheet2.getParentFcName() + "\n";
+					suParentOwnedFc += sheet2.getSuParentFcName() + "\n";
 					ownedFcCount++;
 				}
 				if(sheet2.getImportClasses() != null && sheet2.getImportClasses().contains(sheet1.getClassName() + "\n")){
-					importedFc += "\n"+ sheet2.getFcName();
+					importedFc += sheet2.getFcName() + "\n";
+					parentImportedFc += sheet2.getParentFcName() + "\n";
+					suParentImportedFc += sheet2.getSuParentFcName() + "\n";
 					importFcCount++;
 				}
 			}
 			if(ownedFcCount > 0){
 				sheet1.setOwnerFc(ownedFc);
+				sheet1.setParentOwnerBc(parentOwnedFc);
+				sheet1.setSuParentOwnerBc(suParentOwnedFc);
 			}
 			sheet1.setImportedFc(importedFc);
+			sheet1.setParentImportedFc(parentImportedFc);
+			sheet1.setSuParentImportedFc(suParentImportedFc);
 			sheet1.setOwnedFcCount(ownedFcCount);
 			sheet1.setImportedFcCount(importFcCount);
 		}
@@ -105,8 +117,9 @@ public class Process {
 				Sheet2BO sheet2 = new Sheet2BO();
 				String fileName = file.getName().split("_pavast.xml")[0];
 				String parentFile = file.getParentFile().getParentFile() != null ? file.getParentFile().getParentFile().getName() : "";
-				String fullFileName = parentFile +"/" + file.getParentFile().getName() +"/"+ fileName;
-				sheet2.setFcName(fullFileName);
+				sheet2.setFcName(fileName);
+				sheet2.setParentFcName(file.getParentFile().getName());
+				sheet2.setSuParentFcName(parentFile);
 				NodeList interfaceNodes = doc.getElementsByTagName("SW-FEATURE-INTERFACE");
 				for(int i = 0; i < interfaceNodes.getLength(); i++){
 					Element temp = (Element) interfaceNodes.item(i);
@@ -209,6 +222,8 @@ public class Process {
 				excelBo.setOwnerFc(file == null ? null : file.getName());
 				File parentFile = file.getParentFile().getParentFile();
 				excelBo.setOwnerBc(parentFile != null ? parentFile.getName() : null);
+				excelBo.setParentOwnerBc(file.getParentFile().getName());
+				excelBo.setSuParentOwnerBc(parentFile != null ? parentFile.getName() : null);;
 				excelBoList.add(excelBo);
 			}
 		}
@@ -226,6 +241,8 @@ public class Process {
 			int cellIndex = 0;
 			row.createCell(cellIndex++).setCellValue(excelBo.getClassName());
 			row.createCell(cellIndex++).setCellValue(excelBo.getClassType());
+			row.createCell(cellIndex++).setCellValue(excelBo.getSuParentOwnerBc());
+			row.createCell(cellIndex++).setCellValue(excelBo.getParentOwnerBc());
 			row.createCell(cellIndex++).setCellValue(excelBo.getOwnerFc());
 			row.createCell(cellIndex++).setCellValue(excelBo.getOwnedFcCount());
 			row.createCell(cellIndex++).setCellValue(excelBo.getOwnerBc());
@@ -234,7 +251,9 @@ public class Process {
 					excelBo.getClassParameter());
 			row.createCell(cellIndex++).setCellValue(excelBo.getClassService());
 			row.createCell(cellIndex++).setCellValue(excelBo.getNestedClass());
-			row.createCell(cellIndex++).setCellValue(excelBo.getImportedFc());
+			row.createCell(cellIndex++).setCellValue(excelBo.getImportedFcCount() > 0 ? excelBo.getSuParentImportedFc() : "Nill");
+			row.createCell(cellIndex++).setCellValue(excelBo.getImportedFcCount() > 0 ? excelBo.getParentImportedFc() : "Nill");
+			row.createCell(cellIndex++).setCellValue(excelBo.getImportedFcCount() > 0 ? excelBo.getImportedFc() : "Nill");
 			row.createCell(cellIndex++).setCellValue(excelBo.getImportedFcCount());
 		}
 		

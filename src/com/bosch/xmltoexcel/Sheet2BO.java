@@ -7,6 +7,8 @@ public class Sheet2BO {
 	private String importClasses;
 	private String ownedClasses;
 	private String fcName;
+	private String parentFcName;
+	private String suParentFcName;
 	
 	public String getExportClasses() {
 		return exportClasses;
@@ -31,5 +33,17 @@ public class Sheet2BO {
 	}
 	public void setFcName(String fcName) {
 		this.fcName = fcName;
+	}
+	public String getParentFcName() {
+		return parentFcName;
+	}
+	public void setParentFcName(String parentFcName) {
+		this.parentFcName = parentFcName;
+	}
+	public String getSuParentFcName() {
+		return suParentFcName;
+	}
+	public void setSuParentFcName(String suParentFcName) {
+		this.suParentFcName = suParentFcName;
 	}
 }

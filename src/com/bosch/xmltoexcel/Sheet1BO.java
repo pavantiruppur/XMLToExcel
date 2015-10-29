@@ -7,11 +7,15 @@ public class Sheet1BO {
 	private String ownerFc;
 	private Integer ownedFcCount;
 	private String ownerBc;
+	private String parentOwnerBc;
+	private String suParentOwnerBc;
 	private Integer classVarible;
 	private Integer classParameter;
 	private Integer classService;
 	private Integer nestedClass;
 	private String importedFc;
+	private String parentImportedFc;
+	private String suParentImportedFc;
 	private Integer importedFcCount;
 	
 	public String getClassName() {
@@ -79,6 +83,30 @@ public class Sheet1BO {
 	}
 	public void setImportedFcCount(Integer importedFcCount) {
 		this.importedFcCount = importedFcCount;
+	}
+	public String getParentOwnerBc() {
+		return parentOwnerBc;
+	}
+	public void setParentOwnerBc(String parentOwnerBc) {
+		this.parentOwnerBc = parentOwnerBc;
+	}
+	public String getSuParentOwnerBc() {
+		return suParentOwnerBc;
+	}
+	public void setSuParentOwnerBc(String suParentOwnerBc) {
+		this.suParentOwnerBc = suParentOwnerBc;
+	}
+	public String getParentImportedFc() {
+		return parentImportedFc;
+	}
+	public void setParentImportedFc(String parentImportedFc) {
+		this.parentImportedFc = parentImportedFc;
+	}
+	public String getSuParentImportedFc() {
+		return suParentImportedFc;
+	}
+	public void setSuParentImportedFc(String suParentImportedFc) {
+		this.suParentImportedFc = suParentImportedFc;
 	}
 	
 	@Override
