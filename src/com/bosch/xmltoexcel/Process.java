@@ -153,7 +153,12 @@ public class Process {
 				excelBO.getSheet1().addAll(excelBoList);
 				
 				Sheet2BO sheet2 = new Sheet2BO();
-				String fileName = file.getName().split("_pavast.xml")[0];
+				String fileName = "";
+				if(file.getName().contains("_auto_pavast.xml")){
+					fileName = file.getName().split("_auto_pavast.xml")[0];
+				} else {
+					fileName = file.getName().split("_pavast.xml")[0];
+				}
 				String parentFile = file.getParentFile().getParentFile() != null ? file.getParentFile().getParentFile().getName() : "";
 				sheet2.setFcName(fileName);
 				sheet2.setParentFcName(file.getParentFile().getName());
