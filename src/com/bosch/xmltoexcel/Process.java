@@ -63,6 +63,9 @@ public class Process {
 			String importedFc = "";
 			String parentImportedFc = "";
 			String suParentImportedFc = "";
+			String clsInstFileWithCount = "";
+			String parentClsInst = "";
+			String suParentClsInst = "";
 			int ownedFcCount = 0;
 			int importFcCount = 0;
 			for(Sheet2BO sheet2 : excelBO.getSheet2()){
@@ -78,6 +81,11 @@ public class Process {
 					suParentImportedFc += sheet2.getSuParentFcName() + "\n";
 					importFcCount++;
 				}
+				if(sheet2.getClsInstCount() != null){
+					clsInstFileWithCount += sheet2.getFcName() + " - " + sheet2.getClsInstCount() + "\n";
+					parentClsInst += sheet2.getParentFcName() + "\n";
+					suParentClsInst += sheet2.getSuParentFcName() + "\n";
+				}
 			}
 			if(ownedFcCount > 0){
 				sheet1.setOwnerFc(ownedFc);
@@ -89,6 +97,10 @@ public class Process {
 			sheet1.setSuParentImportedFc(suParentImportedFc);
 			sheet1.setOwnedFcCount(ownedFcCount);
 			sheet1.setImportedFcCount(importFcCount);
+			//clsInstances count
+			sheet1.setClsInstFileWithCount(clsInstFileWithCount);
+			sheet1.setParentClsInst(parentClsInst);
+			sheet1.setSuParentClsInst(suParentClsInst);
 			
 			Map<String, Integer> ownedCountMap = ownedModifierMap.get(suParentOwnedFc);
 			if(ownedCountMap == null){
@@ -185,6 +197,8 @@ public class Process {
 						sheet2.setOwnedClasses(getListOfElementValue(temp, "SW-CLASS-REF"));
 					}
 				}
+				sheet2.setClsInstCount(createClassInst(doc.getElementsByTagName("SW-CLASS-REF")));
+				
 				excelBO.getSheet2().add(sheet2);
 			}
 		} catch (Exception e) {
@@ -273,6 +287,27 @@ public class Process {
 		return excelBoList;
 	}
 
+	public Map<String, Integer> createClassInst(NodeList nodeList) {
+		Map<String, Integer> clsInstCount = new HashMap<String, Integer>();
+		for (int count = 0; count < nodeList.getLength(); count++) {
+			Node classInsNode = nodeList.item(count);
+			if (classInsNode.getNodeType() == Node.ELEMENT_NODE && classInsNode.getParentNode() != null
+					&& classInsNode.getParentNode().getParentNode() != null
+					&& classInsNode.getParentNode().getNodeName().equals("SW-CLASS-INSTANCE")
+					&& classInsNode.getParentNode().getParentNode().getNodeName().equals("SW-CLASS-INSTANCES")) {
+				Element classInst = (Element) classInsNode;
+				String clsName = classInst.getTextContent();
+				
+				Integer clsCount = clsInstCount.get(clsName);
+				if(clsCount == null){
+					clsCount = 0;
+				}
+				clsInstCount.put(clsName, ++clsCount);
+			}
+		}
+		return clsInstCount;
+	}
+
 	public void writeStudentsListToExcel(ExcelBO excelBO,
 			String outputLocation) {
 		Set<Sheet1BO> excelBoList = excelBO.getSheet1();
@@ -298,6 +333,9 @@ public class Process {
 			row.createCell(cellIndex++).setCellValue(excelBo.getImportedFcCount() > 0 ? excelBo.getParentImportedFc() : "Nill");
 			row.createCell(cellIndex++).setCellValue(excelBo.getImportedFcCount() > 0 ? excelBo.getImportedFc() : "Nill");
 			row.createCell(cellIndex++).setCellValue(excelBo.getImportedFcCount());
+			row.createCell(cellIndex++).setCellValue(excelBo.getSuParentClsInst());
+			row.createCell(cellIndex++).setCellValue(excelBo.getParentClsInst());
+			row.createCell(cellIndex++).setCellValue(excelBo.getClsInstFileWithCount());
 		}
 		
 		List<Sheet2BO> sheet2BOlist = excelBO.getSheet2();
