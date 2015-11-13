@@ -81,8 +81,8 @@ public class Process {
 					suParentImportedFc += sheet2.getSuParentFcName() + "\n";
 					importFcCount++;
 				}
-				if(sheet2.getClsInstCount() != null){
-					clsInstFileWithCount += sheet2.getFcName() + " - " + sheet2.getClsInstCount() + "\n";
+				if(sheet2.getClsInstCount().get(sheet1.getClassName()) != null){
+					clsInstFileWithCount += sheet2.getFcName() + " - " + sheet2.getClsInstCount().get(sheet1.getClassName()) + "\n";
 					parentClsInst += sheet2.getParentFcName() + "\n";
 					suParentClsInst += sheet2.getSuParentFcName() + "\n";
 				}
