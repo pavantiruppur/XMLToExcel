@@ -17,6 +17,9 @@ public class Sheet1BO {
 	private String parentImportedFc;
 	private String suParentImportedFc;
 	private Integer importedFcCount;
+	private String clsInstFileWithCount;
+	private String parentClsInst;
+	private String suParentClsInst;
 	
 	public String getClassName() {
 		return className;
@@ -107,6 +110,24 @@ public class Sheet1BO {
 	}
 	public void setSuParentImportedFc(String suParentImportedFc) {
 		this.suParentImportedFc = suParentImportedFc;
+	}
+	public String getClsInstFileWithCount() {
+		return clsInstFileWithCount;
+	}
+	public void setClsInstFileWithCount(String clsInstFileWithCount) {
+		this.clsInstFileWithCount = clsInstFileWithCount;
+	}
+	public String getParentClsInst() {
+		return parentClsInst;
+	}
+	public void setParentClsInst(String parentClsInst) {
+		this.parentClsInst = parentClsInst;
+	}
+	public String getSuParentClsInst() {
+		return suParentClsInst;
+	}
+	public void setSuParentClsInst(String suParentClsInst) {
+		this.suParentClsInst = suParentClsInst;
 	}
 	
 	@Override
