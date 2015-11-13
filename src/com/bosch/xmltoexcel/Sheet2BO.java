@@ -1,5 +1,7 @@
 package com.bosch.xmltoexcel;
 
+import java.util.Map;
+
 
 public class Sheet2BO {
 
@@ -9,6 +11,7 @@ public class Sheet2BO {
 	private String fcName;
 	private String parentFcName;
 	private String suParentFcName;
+	private Map<String, Integer> clsInstCount;
 	
 	public String getExportClasses() {
 		return exportClasses;
@@ -45,5 +48,11 @@ public class Sheet2BO {
 	}
 	public void setSuParentFcName(String suParentFcName) {
 		this.suParentFcName = suParentFcName;
+	}
+	public Map<String, Integer> getClsInstCount() {
+		return clsInstCount;
+	}
+	public void setClsInstCount(Map<String, Integer> clsInstCount) {
+		this.clsInstCount = clsInstCount;
 	}
 }
